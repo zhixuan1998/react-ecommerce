@@ -1,0 +1,15 @@
+@use "font-face";
+@use "mixins" as mix;
+@use "functions" as func;
+
+body {
+    overflow-x: hidden;
+}
+
+input {
+    &,
+    &:focus {
+        outline: none;
+        border: none;
+    }
+}

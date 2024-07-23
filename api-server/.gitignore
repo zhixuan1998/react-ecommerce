@@ -36,8 +36,3 @@ scripts/local
 test
 test*
 apiTest.http
-
-.firebaserc
-firebase.json
-
-

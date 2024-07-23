@@ -29,11 +29,12 @@ function CustomSearchBox({
   }, []);
 
   function search() {
-    if (
-      !(onSearch instanceof Function) ||
-      inputValue.length === 0 ||
-      (inputValue === previousInputValue && dropdownValue === previousDropdownValue)
-    ) {
+    const notFunction = typeof onSearch !== 'function';
+    const noInputValue = inputValue.length === 0;
+    const noValueChange =
+      inputValue === previousInputValue && dropdownValue === previousDropdownValue;
+
+    if (notFunction || noInputValue || noValueChange) {
       return;
     }
 

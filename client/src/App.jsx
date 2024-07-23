@@ -5,7 +5,8 @@ import { Outlet } from 'react-router-dom';
 import { Transition } from 'react-transition-group';
 
 import { useAuth } from '@/hooks';
-import { ModalContext } from '@/utils/context.js';
+import { noop } from '@/utils/is';
+import { ModalContext } from '@/utils/context';
 import messages from '@/models/businessMessages';
 
 import CustomLoading from '@/components/CustomLoading.jsx';
@@ -15,7 +16,7 @@ const initModalValue = {
   title: '',
   message: '',
   buttonText: '',
-  onClose: () => {}
+  onClose: noop
 };
 
 const transitionDurationInMs = 300;
@@ -44,7 +45,7 @@ function App() {
       title = messages.error.title.oops(),
       message = messages.error.message.general(),
       buttonText = messages.button.ok(),
-      onClose = () => {}
+      onClose = noop
     } = obj ?? {};
 
     setModal({ title, message, buttonText, onClose });

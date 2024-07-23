@@ -1,11 +1,12 @@
 import './CustomButton.scss';
+import { noop } from '@/utils/is';
 
 function CustomButton({
   children,
   style = {},
   color = 'primary',
   disabled = false,
-  onClick = () => {}
+  onClick = noop
 }) {
   return (
     <button

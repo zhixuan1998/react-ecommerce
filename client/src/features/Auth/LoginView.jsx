@@ -72,9 +72,6 @@ function LoginView() {
 
   async function login() {
     $v.$touch();
-    if ($v.asdf === undefined) {
-      return;
-    }
 
     const success = await auth.login(credentials);
 

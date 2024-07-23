@@ -147,7 +147,7 @@ const controller = ({ config, userRepository, accountRepository, userCommonFunct
             try {
                 const { firstName, lastName, dob, email, password, phoneCode, phoneNumber } = req.body;
 
-                const [existingAccountError, existingAccount] = await accountRepository.getByEmail(email);
+                const [existingAccountError, existingAccount] = await accountRepository.get({ email });
 
                 if (existingAccountError) throw existingAccountError;
 
@@ -190,7 +190,7 @@ const controller = ({ config, userRepository, accountRepository, userCommonFunct
 
                 return res.status(200).send(generateSuccessResponse());
             } catch (err) {
-                // console.log(err);
+                console.log(err);
                 return res.status(500).send(generateErrorResponse());
             }
         },

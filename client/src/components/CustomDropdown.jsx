@@ -4,8 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
-import { defaultMenuProps } from './defaultProps.js';
-import { intersectProps, omitProps } from './utils/props.js';
+import { noop } from '@/utils/is';
+import { defaultMenuProps } from './defaultProps';
+import { intersectProps, omitProps } from '@/utils/props';
 import { useClickOutside } from '@/hooks';
 
 import CustomMenu from './CustomMenu.jsx';
@@ -68,7 +69,7 @@ function CustomDropdown({
       <div
         className="dropdown-container"
         onClick={menu.searchable ? openDropdown : toggleDropdown}
-        onMouseEnter={menuOnHover ? openDropdown : () => {}}
+        onMouseEnter={menuOnHover ? openDropdown : noop}
       >
         <button className="dropdown-opener">
           <div>{displayValue}</div>

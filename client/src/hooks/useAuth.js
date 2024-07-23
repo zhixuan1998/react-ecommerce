@@ -1,6 +1,7 @@
-import { useDispatch, useSelector } from 'react-redux';
-import userSlice from '@/features/Auth/userSlice';
+import { isAxiosError } from 'axios';
 import httpClient from '@/utils/http';
+import userSlice from '@/features/Auth/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 function useAuth() {
     const dispatch = useDispatch();
@@ -9,82 +10,74 @@ function useAuth() {
     async function login({ email, password }) {
         const encodedPassword = btoa(password);
 
-        const success = await httpClient
-            .post(`users/login`, { email, password: encodedPassword })
-            .then(async ({ data: { data } }) => {
-                localStorage.setItem('accessToken', data.accessToken);
-                await getUser();
-                return true;
-            })
-            .catch(() => {
-                return false;
-            });
+        const response = await httpClient.post(`users/login`, { email, password: encodedPassword });
 
-        return success;
+        if (isAxiosError(response)) {
+            return false;
+        }
+
+        localStorage.setItem('accessToken', response.data.data.accessToken);
+        await getUser();
+
+        return true;
     }
 
     async function register({ firstName, lastName, email, dob, phoneCode, phoneNumber, password }) {
         const encodedPassword = btoa(password);
 
-        const success = await httpClient
-            .post(`users/register`, {
-                firstName,
-                lastName,
-                email,
-                dob,
-                phoneCode,
-                phoneNumber,
-                password: encodedPassword
-            })
-            .then(() => {
-                login({ email, password });
-                return true;
-            })
-            .catch(() => {
-                return false;
-            });
+        const response = await httpClient.post(`users/register`, {
+            firstName,
+            lastName,
+            email,
+            dob,
+            phoneCode,
+            phoneNumber,
+            password: encodedPassword
+        });
 
-        return success;
+        if (isAxiosError(response)) {
+            return false;
+        }
+
+        login({ email, password });
+
+        return true;
     }
 
     async function socialLogin({ accessToken, provider }) {
-        const success = await httpClient
-            .post(`users/socialLogin`, {
-                accessToken,
-                provider
-            })
-            .then(async ({ data: { data } }) => {
-                localStorage.setItem('accessToken', data.accessToken);
-                await getUser();
-                return true;
-            })
-            .catch(() => {
-                return false;
-            });
+        const response = await httpClient.post(`users/socialLogin`, {
+            accessToken,
+            provider
+        });
 
-        return success;
+        if (isAxiosError(response)) {
+            return false;
+        }
+
+        localStorage.setItem('accessToken', response.data.data.accessToken);
+        await getUser();
+
+        return true;
     }
 
     async function getUser() {
         if (!localStorage.getItem('accessToken')) return;
 
-        await httpClient
-            .get(`users`)
-            .then(({ data: { data } }) => {
-                if (!data) return;
+        const response = await httpClient.get(`users`);
 
-                dispatch(userSlice.updateUser(data));
-                
-            })
-            .catch(() => {});
+        if (!isAxiosError(response) && response.data?.data) {
+            dispatch(userSlice.updateUser(response.data.data));
+        }
     }
 
     async function logout() {
         const headers = { Authorization: `Bearer ${localStorage.getItem('accessToken')}` };
 
-        await httpClient.post(`users/logout`, { headers }).then(() => {
+        const response = await httpClient.post(`users/logout`, { headers });
+
+        if (isAxiosError(response)) {
             localStorage.removeItem('accessToken');
-        });
+        }
     }
 
     return { user, login, register, socialLogin, getUser, logout };

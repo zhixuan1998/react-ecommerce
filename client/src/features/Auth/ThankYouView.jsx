@@ -11,15 +11,10 @@ function ThankYouView() {
   const [searchParams] = useSearchParams();
   const [changeLayout] = useMediaQuery([{ maxWidth: '576px' }]);
 
-
   const redirect = searchParams.get('redirect');
-  const query = redirect ? `redirect=${redirect}` : '';
 
-  const buttonText = messages.button[query ? 'continue' : 'backToHomepage']();
-
-  function goToNextPage() {
-    navigate(redirect);
-  }
+  const buttonText = messages.button[redirect ? 'continue' : 'backToHomepage']();
+  const goToNextPage = () => navigate(redirect ?? '/home');
 
   return (
     <div className="main-content">

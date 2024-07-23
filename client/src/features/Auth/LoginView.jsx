@@ -75,8 +75,14 @@ function LoginView() {
 
     const success = await auth.login(credentials);
 
+    if (success) {
+      navigate(searchParams.get('redirect') ?? '/home');
+    } else {
+      $modal.open({ message: messages.error.message.invalidAuth() });
+    }
+
     success
-      ? navigate(searchParams.get('redirect') ?? '/')
+      ? navigate(searchParams.get('redirect') ?? '/home')
       : $modal.open({ message: messages.error.message.invalidAuth() });
 
     resetForm();

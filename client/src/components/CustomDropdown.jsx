@@ -6,7 +6,7 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
 import { noop } from '@/utils/is';
 import { defaultMenuProps } from './defaultProps';
-import { intersectProps, omitProps } from '@/utils/props';
+import { intersectProps, omitProps } from './utils/props';
 import { useClickOutside } from '@/hooks';
 
 import CustomMenu from './CustomMenu.jsx';

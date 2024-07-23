@@ -66,15 +66,18 @@ function SignupView() {
 
     if ($v.$error) return;
 
-    const result = await auth.register({
+    const success = await auth.register({
       ...user,
       dob: new Date(user.dob).toISOString()
     });
 
-    const redirect = searchParams.get('redirect');
-    const query = redirect ? `redirect=${redirect}` : '';
-
-    result ? navigate(`/thank-you?${query}`) : $modal.open();
+    if (success) {
+      const redirect = searchParams.get('redirect');
+      const query = redirect ? `?redirect=${redirect}` : '';
+      navigate(`/thank-you${query}`);
+    } else {
+      $modal.open();
+    }
   }
 
   const $v = useValidation(

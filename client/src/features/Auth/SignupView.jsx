@@ -110,6 +110,10 @@ function SignupView() {
   function renderCustomFormControl(field) {
     if (!Object.prototype.hasOwnProperty.call(user, field)) return <></>;
 
+    const isDob = field === 'dob';
+    const isPassword = field === 'password' || field === 'confirmPassword';
+    const isPhoneNumber = field === 'phoneNumber';
+
     const props = {
       inputValue: user[field],
       setInputValue: (value) => setUserProp(field, value),
@@ -117,21 +121,17 @@ function SignupView() {
       verticalLayout: true
     };
 
-    switch (field) {
-      case 'dob':
-        props.actualType = 'calendar';
-        break;
-      case 'password':
-      case 'confirmPassword':
-        props.actualType = 'password';
-        break;
+    if (isDob) {
+      props.actualType = 'calendar';
+    } else if (isPassword) {
+      props.actualType = 'password';
     }
 
-    if (field !== 'dob') {
+    if (!isDob) {
       props.className = 'col-sm-6';
     }
 
-    if (field === 'phoneNumber') {
+    if (isPhoneNumber) {
       props.prependValue = user.phoneCode;
       props.setPrependValue = (value) => setUserProp('phoneCode', value);
       props.options = phoneCodes;

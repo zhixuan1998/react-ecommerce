@@ -34,7 +34,6 @@ function CustomDropdown({
   }, []);
 
   function openDropdown() {
-    console.log('open');
     setIsDropdownVisible(true);
   }
 

@@ -1,5 +1,10 @@
 @use "functions" as func;
 
+@mixin base-wrapper {
+    width: 100%;
+    padding: 10px func.responsive-scaling();
+}
+
 @mixin multiline-ellipsis($line-clamp: 2) {
     display: -webkit-box;
     -webkit-line-clamp: $line-clamp;

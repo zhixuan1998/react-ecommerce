@@ -1,0 +1,40 @@
+.pagination-indicator-container {
+    display: flex;
+  
+    &.disabled,
+    .disabled,
+    .rest {
+      cursor: default;
+      pointer-events: none;
+    }
+  
+    .indicator-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin-left: -1px;
+      width: 40px;
+      height: 40px;
+      border: 1px solid func.theme-color(s);
+  
+      color: func.theme-color(l);
+      cursor: pointer;
+      user-select: none;
+  
+      &.active {
+        background-color: func.theme-color(l);
+        border-color: func.theme-color(l);
+        color: func.theme-color(xs);
+        z-index: 1;
+      }
+  
+      &:not(.active):not(.disabled):not(.rest):hover {
+        background-color: func.theme-color(s);
+      }
+  
+      &.disabled {
+        color: func.theme-color(l, 0.5);
+      }
+    }
+  }

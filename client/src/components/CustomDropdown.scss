@@ -1,0 +1,41 @@
+.custom-dropdown {
+	& > * {
+		width: 100%;
+	}
+
+	&,
+	.dropdown-container,
+	.dropdown-container .dropdown-opener {
+		height: 100%;
+	}
+
+	.dropdown-container {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+
+		.dropdown-opener {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			padding: 0 10px;
+			border: none;
+			background-color: inherit;
+
+			div {
+				display: flex;
+				width: 100%;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		}
+
+		.fa-angle-down,
+		.fa-angle-up {
+			font-size: 15px;
+			margin-left: 10px;
+		}
+	}
+}

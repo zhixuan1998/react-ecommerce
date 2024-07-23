@@ -1,35 +1,115 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.scss';
+
+import { useState, useRef, useEffect, Suspense } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Transition } from 'react-transition-group';
+
+import { useAuth } from '@/hooks';
+import { ModalContext } from '@/utils/context.js';
+import messages from '@/models/businessMessages';
+
+import CustomLoading from '@/components/CustomLoading.jsx';
+import { CustomFooter } from '@/components';
+
+const initModalValue = {
+  title: '',
+  message: '',
+  buttonText: '',
+  onClose: () => {}
+};
+
+const transitionDurationInMs = 300;
 
 function App() {
-  const [count, setCount] = useState(0)
+  const auth = useAuth();
+
+  const modalContainerRef = useRef(null);
+  const [modal, setModal] = useState(initModalValue);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [inTransitioning, setInTransitioning] = useState(false);
+
+  const modalDisplay = isModalVisible ? 'flex' : 'none';
+
+  useEffect(() => {
+    auth.getUser();
+  }, []);
+
+  function hideModal() {
+    setIsModalVisible(false);
+    resetModal();
+  }
+
+  function openModal(obj) {
+    const {
+      title = messages.error.title.oops(),
+      message = messages.error.message.general(),
+      buttonText = messages.button.ok(),
+      onClose = () => {}
+    } = obj ?? {};
+
+    setModal({ title, message, buttonText, onClose });
+
+    setIsModalVisible(true);
+    setInTransitioning(true);
+  }
+
+  function resetModal() {
+    setModal(initModalValue);
+  }
+
+  function exitTransition() {
+    setInTransitioning(false);
+  }
+
+  const contextValue = {
+    hide: exitTransition,
+    open: openModal
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <ModalContext.Provider value={contextValue}>
+      <div className="app-container">
+        <Suspense fallback={<CustomLoading />}>
+          <Outlet />
+          <CustomFooter />
+          <div className="modal-overlay" style={{ display: modalDisplay }}>
+            <Transition
+              nodeRef={modalContainerRef}
+              in={inTransitioning}
+              timeout={transitionDurationInMs}
+              onExited={hideModal}
+            >
+              {(state) => {
+                const isEntering = state === 'entering';
+                const isExiting = state === 'exiting';
+
+                return (
+                  <div
+                    className={`modal-container ${isEntering ? 'bounce-enter-active' : ''} ${
+                      isExiting ? 'bounce-leave-active' : ''
+                    }`}
+                    ref={modalContainerRef}
+                  >
+                    <div className="title">{modal.title}</div>
+                    <div className="body">{modal.message}</div>
+                    <div
+                      className="button"
+                      onClick={() => {
+                        exitTransition();
+                        modal.onClose();
+                      }}
+                    >
+                      {modal.buttonText}
+                    </div>
+                  </div>
+                );
+              }}
+            </Transition>
+          </div>
+        </Suspense>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </ModalContext.Provider>
+  );
 }
 
-export default App
+export default App;

@@ -1,0 +1,71 @@
+footer {
+  width: 100%;
+  min-height: 200px;
+  background-color: func.theme-color(xl);
+  color: func.theme-color(s);
+
+  .footer-wrapper {
+    @include mix.base-wrapper;
+
+    height: 100%;
+    display: flex;
+    padding-top: 50px;
+    padding-bottom: 50px;
+
+    & > * {
+      flex-grow: 1;
+    }
+
+    .footer-mid {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .contact-wrapper {
+        text-align: center;
+
+        .contact-links {
+          margin-bottom: 2rem;
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          column-gap: 15px;
+
+          .contact-link a {
+            display: flex;
+            align-items: center;
+            column-gap: 5px;
+
+            .contact-link-title {
+              position: relative;
+              font-weight: 900;
+
+              &::before {
+                position: absolute;
+                content: "";
+                bottom: 0;
+                width: 0;
+                height: 1px;
+                background-color: currentColor;
+                transition: width 0.15s;
+              }
+            }
+
+            &:hover {
+              color: func.theme-color(m);
+
+              .contact-link-title::before {
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+
+      .copyright {
+        text-align: center;
+      }
+    }
+  }
+}

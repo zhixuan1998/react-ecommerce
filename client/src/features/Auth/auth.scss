@@ -1,0 +1,44 @@
+.main-content {
+  height: auto;
+  min-height: 600px;
+
+  .credential-section {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+
+    .forgot-password {
+      margin: 0;
+      cursor: pointer;
+    }
+  }
+
+  .row {
+    row-gap: 22px;
+  }
+
+  .custom-form {
+    padding: 44px 60px;
+
+    .thank_you-label {
+      text-align: center;
+      font-size: 40px;
+    }
+
+    .thank_you-description {
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .custom-button {
+      max-width: 200px;
+      margin: auto;
+      margin-top: 30px;
+    }
+
+    &.small-screen-layout {
+      padding: 0;
+      border-radius: 0;
+    }
+  }
+}

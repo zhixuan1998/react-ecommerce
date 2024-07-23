@@ -13,3 +13,83 @@ input {
         border: none;
     }
 }
+
+.main-content {
+    @include mix.base-wrapper;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    background-color: func.theme-color(xs);
+
+    * {
+        font-family: NotoSans-Regular, "Microsoft JhengHei UI", Poppins, Roboto, sans-serif;
+    }
+
+    > * {
+        margin-left: auto;
+        margin-right: auto;
+
+        @media (width < 576px) {
+            padding: 0 5px;
+        }
+    }
+
+    [class*="-section"] {
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    .carousel-section .section-title {
+        color: rgba(36, 32, 104, 0.5);
+        padding: 5px;
+        font-size: 30px;
+    }
+
+    @media (width < 576px) {
+        padding: 0;
+        row-gap: 0;
+
+        .section-title {
+            text-align: center;
+        }
+    }
+
+    .top-section {
+    }
+
+    .listing-section {
+        .item {
+            &:hover {
+                translate: 0 -2.5px;
+            }
+
+            .item-image {
+                &,
+                img {
+                    width: 100%;
+                }
+
+                img {
+                    aspect-ratio: 1 / 1.1;
+                }
+            }
+
+            .item-content {
+                display: flex;
+                flex-direction: column;
+                padding: 10px;
+
+                .item-name {
+                    @include mix.multiline-ellipsis(2);
+                    font-size: 14px;
+                }
+
+                .item-price {
+                    font-size: 18px;
+                    color: #f57224;
+                }
+            }
+        }
+    }
+}

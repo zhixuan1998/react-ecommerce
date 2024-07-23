@@ -1,0 +1,13 @@
+.listing-section {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(var(--min-item-width), 100%), var(--item-width)));
+	gap: var(--gap-width);
+
+	.item {
+		margin-bottom: var(--gap-width);
+		aspect-ratio: 1 / 1.789;
+		background-color: #ffffff;
+		transition: translate 0.15s;
+		cursor: pointer;
+	}
+}

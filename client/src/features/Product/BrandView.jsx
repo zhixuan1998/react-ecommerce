@@ -2,9 +2,10 @@ import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { RepositoryContext } from '@/utils/context';
 
+import Base from '../components/Base';
 import ProductListing from './components/ProductListing';
 
-function BrandView() {
+function Component() {
   const { brandId } = useParams();
   const $repositories = useContext(RepositoryContext);
 
@@ -22,8 +23,10 @@ function BrandView() {
   }, []);
 
   return (
-    <ProductListing searchAreaOptions={searchAreaOptions} />
-  )
+    <Base header={{ searchBox: true, searchAreaOptions }}>
+      <ProductListing />
+    </Base>
+  );
 }
 
-export default BrandView;
+export { Component };

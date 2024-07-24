@@ -2,12 +2,13 @@ import './auth.scss';
 
 import { useImmer } from 'use-immer';
 import { useState, useContext, useEffect } from 'react';
-import { useNavigate, useSearchParams, useOutletContext } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useValidation, useAuth } from '@/hooks';
-import { validators } from '@/hooks/useValidation';
 import messages from '@/models/businessMessages';
+import { validators } from '@/hooks/useValidation';
 import { ModalContext, RepositoryContext } from '@/utils/context';
 
+import Base from '../components/Base';
 import {
   CustomForm,
   CustomButton,
@@ -30,10 +31,9 @@ const initUserValue = {
 
 const maxWidth = '800px';
 
-function SignupView() {
+function Component() {
   const auth = useAuth();
   const navigate = useNavigate();
-  const { setTitle } = useOutletContext();
   const [searchParams] = useSearchParams();
   const $modal = useContext(ModalContext);
   const $repositories = useContext(RepositoryContext);
@@ -42,12 +42,10 @@ function SignupView() {
   const [phoneCodes, setPhoneCodes] = useState([]);
 
   useEffect(() => {
-    setTitle(messages.title.signup());
-    getCountryPhonceCodes();
-    return () => setTitle('');
+    getCountryPhoneCodes();
   }, []);
 
-  async function getCountryPhonceCodes() {
+  async function getCountryPhoneCodes() {
     await $repositories.lookupRepository.getCountryPhoneCodes().then((response) => {
       setPhoneCodes(response.data.data.results);
     });
@@ -170,38 +168,40 @@ function SignupView() {
   }
 
   return (
-    <div className=" main-content">
-      <CustomForm
-        header={{ title: 'Sign Up', description: 'Please fill up the registration form' }}
-        maxWidth={maxWidth}
-      >
-        <div>
-          <div className="row">
-            {renderCustomFormControl('firstName')}
-            {renderCustomFormControl('lastName')}
+    <Base title={messages.title.signup()}>
+      <div className=" main-content">
+        <CustomForm
+          header={{ title: 'Sign Up', description: 'Please fill up the registration form' }}
+          maxWidth={maxWidth}
+        >
+          <div>
+            <div className="row">
+              {renderCustomFormControl('firstName')}
+              {renderCustomFormControl('lastName')}
+            </div>
+
+            <div className="row">
+              {renderCustomFormControl('email')}
+              {renderCustomFormControl('phoneNumber')}
+            </div>
+
+            <div className="row">{renderCustomFormControl('dob')}</div>
+
+            <div className="row">
+              {renderCustomFormControl('password')}
+              {renderCustomFormControl('confirmPassword')}
+            </div>
+
+            <CustomButton style={{ marginTop: '15px' }} onClick={signup}>
+              {messages.button.signup()}
+            </CustomButton>
           </div>
-
-          <div className="row">
-            {renderCustomFormControl('email')}
-            {renderCustomFormControl('phoneNumber')}
-          </div>
-
-          <div className="row">{renderCustomFormControl('dob')}</div>
-
-          <div className="row">
-            {renderCustomFormControl('password')}
-            {renderCustomFormControl('confirmPassword')}
-          </div>
-
-          <CustomButton style={{ marginTop: '15px' }} onClick={signup}>
-            {messages.button.signup()}
-          </CustomButton>
-        </div>
-        <CustomSeparator text="OR" />
-        <CustomSocialLoginButtonGroup />
-      </CustomForm>
-    </div>
+          <CustomSeparator text="OR" />
+          <CustomSocialLoginButtonGroup />
+        </CustomForm>
+      </div>
+    </Base>
   );
 }
 
-export default SignupView;
+export { Component };

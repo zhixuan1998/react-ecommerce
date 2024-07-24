@@ -3,10 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { RepositoryContext } from '@/utils/context';
 import messages from '@/models/businessMessages';
 
+import Base from '../components/Base';
 import ProductListing from './components/ProductListing';
 import { CustomMiniItemCarousel } from '@/components';
 
-function CategoryView() {
+function Component() {
   const navigate = useNavigate();
   const { categoryId } = useParams();
   const $repositories = useContext(RepositoryContext);
@@ -36,23 +37,25 @@ function CategoryView() {
   }
 
   return (
-    <ProductListing searchAreaOptions={searchAreaOptions}>
-      {categories && (
-        <>
-          <div className="carousel-section">
-            <div className="section-title">
-              {messages.title.categories()} - {category?.name ?? ''}
+    <Base header={{ searchBox: true, searchAreaOptions }}>
+      <ProductListing>
+        {categories && (
+          <>
+            <div className="carousel-section">
+              <div className="section-title">
+                {messages.title.categories()} - {category?.name ?? ''}
+              </div>
             </div>
-          </div>
-          <CustomMiniItemCarousel
-            items={categories}
-            labelField='name'
-            onSelectItem={goToCategory}
-          />
-        </>
-      )}
-    </ProductListing>
+            <CustomMiniItemCarousel
+              items={categories}
+              labelField="name"
+              onSelectItem={goToCategory}
+            />
+          </>
+        )}
+      </ProductListing>
+    </Base>
   );
 }
 
-export default CategoryView;
+export { Component };

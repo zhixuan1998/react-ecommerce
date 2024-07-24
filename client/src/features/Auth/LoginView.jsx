@@ -1,14 +1,15 @@
 import './auth.scss';
 
 import { useImmer } from 'use-immer';
-import { useContext, useEffect } from 'react';
-import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom';
+import { useContext } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useAuth, useValidation } from '@/hooks';
 import { validators } from '@/hooks/useValidation';
 import messages from '@/models/businessMessages';
 import { ModalContext } from '@/utils/context';
 
+import Base from '../components/Base';
 import {
   CustomForm,
   CustomButton,
@@ -23,9 +24,8 @@ const initCredentials = {
   password: ''
 };
 
-function LoginView() {
+function Component() {
   const $modal = useContext(ModalContext);
-  const { setTitle } = useOutletContext();
 
   const maxWidth = '450px';
   const auth = useAuth();
@@ -33,11 +33,6 @@ function LoginView() {
   const [searchParams] = useSearchParams();
 
   const [credentials, setCredentials] = useImmer(initCredentials);
-
-  useEffect(() => {
-    setTitle(messages.title.login());
-    return () => setTitle('');
-  }, []);
 
   const $v = useValidation(
     {
@@ -89,7 +84,6 @@ function LoginView() {
   }
 
   function getErrorMessage(field) {
-    // console.log($v)
     if (!Object.prototype.hasOwnProperty.call($v, field)) return '';
     if ($v[field].required.$error) return messages.validations.required();
 
@@ -109,42 +103,44 @@ function LoginView() {
   }
 
   return (
-    <div className="main-content">
-      <CustomForm
-        header={{ title: 'Log In', description: 'Please enter your credentials' }}
-        maxWidth={maxWidth}
-      >
-        <div className="credential-section">
-          <CustomFormControl
-            inputValue={credentials.email}
-            setInputValue={setEmail}
-            label={messages.label.email()}
-            verticalLayout
-          >
-            {renderErrorMessage('email')}
-          </CustomFormControl>
+    <Base title={messages.title.login()}>
+      <div className="main-content">
+        <CustomForm
+          header={{ title: 'Log In', description: 'Please enter your credentials' }}
+          maxWidth={maxWidth}
+        >
+          <div className="credential-section">
+            <CustomFormControl
+              inputValue={credentials.email}
+              setInputValue={setEmail}
+              label={messages.label.email()}
+              verticalLayout
+            >
+              {renderErrorMessage('email')}
+            </CustomFormControl>
 
-          <CustomFormControl
-            inputValue={credentials.password}
-            setInputValue={setPassword}
-            label={messages.label.password()}
-            actualType="password"
-            maxLength={20}
-            verticalLayout
-          >
-            {renderErrorMessage('password')}
-          </CustomFormControl>
+            <CustomFormControl
+              inputValue={credentials.password}
+              setInputValue={setPassword}
+              label={messages.label.password()}
+              actualType="password"
+              maxLength={20}
+              verticalLayout
+            >
+              {renderErrorMessage('password')}
+            </CustomFormControl>
 
-          <CustomButton style={{ marginTop: '15px' }} onClick={login}>
-            {messages.button.login()}
-          </CustomButton>
-          <p className="forgot-password">{messages.label.forgotPassword()}</p>
-        </div>
-        <CustomSeparator text="OR" />
-        <CustomSocialLoginButtonGroup />
-      </CustomForm>
-    </div>
+            <CustomButton style={{ marginTop: '15px' }} onClick={login}>
+              {messages.button.login()}
+            </CustomButton>
+            <p className="forgot-password">{messages.label.forgotPassword()}</p>
+          </div>
+          <CustomSeparator text="OR" />
+          <CustomSocialLoginButtonGroup />
+        </CustomForm>
+      </div>
+    </Base>
   );
 }
 
-export default LoginView;
+export { Component };

@@ -16,7 +16,8 @@ function CustomMenu(props) {
     valueField,
     searchable,
     menuHeight,
-    animation
+    animation,
+    style
   } = { ...defaultMenuProps, ...menuProps };
 
   const [searchValue, setSearchValue] = useState('');
@@ -79,7 +80,7 @@ function CustomMenu(props) {
       className={`menu-container custom-menu ${animation ? 'animation' : ''} ${
         visible ? 'open' : ''
       }`}
-      style={{ maxHeight: menuHeight }}
+      style={{ maxHeight: menuHeight, ...style }}
     >
       {children}
       <div className="menu-content">{renderMenu()}</div>

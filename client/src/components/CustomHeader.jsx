@@ -50,7 +50,7 @@ function CustomHeader({
         <Link to="/user/purchase">
           {user.lastName} {user.firstName}
         </Link>
-        <CustomPopover options={popoverOptions} open={isPopoverVisible} />
+        <CustomPopover menu={{ options: popoverOptions}} open={isPopoverVisible} />
       </div>
 
       <div className="item item-cart">

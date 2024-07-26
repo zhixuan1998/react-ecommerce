@@ -5,7 +5,7 @@ const slice = createSlice({
     initialState: null,
     reducers: {
         updateUser(state, action) {
-            state = action.payload;
+            return action.payload;
         }
     }
 });

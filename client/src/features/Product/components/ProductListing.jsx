@@ -55,7 +55,7 @@ function ProductListing({ searchArea }) {
     const notSearchFromHomepage = !!(brandId || categoryId);
 
     previousDeps.current = { search, brandId, categoryId, perPage };
-    console.log(searchArea);
+
     if (isSearch && notSearchFromHomepage && searchArea === 'all') {
       return navigate(`/home?search=${search}`);
     }

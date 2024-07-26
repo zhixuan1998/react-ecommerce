@@ -35,13 +35,13 @@ function CustomPopover({
   }
 
   return (
-    <>
-      {open && (
-        <div className={`popover-container popover-${direction}`} popover-id={popoverId}>
-          <CustomMenu {...menu} />
-        </div>
-      )}
-    </>
+    <div
+      className={`popover-container popover-${direction}`}
+      popover-id={popoverId}
+      style={{ display: open ? 'block' : 'none' }}
+    >
+      <CustomMenu {...menu} style={{ width: 'max-content' }} />
+    </div>
   );
 }
 

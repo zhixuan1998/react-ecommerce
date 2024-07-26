@@ -16,11 +16,12 @@
       background-color: #fff;
     }
   }
-}
-.loading-indicator {
-  display: flex;
-  justify-content: center;
-  .spinner-border {
-    color: func.theme-color(xl, 0.5);
+
+  .loading-indicator {
+    display: flex;
+    justify-content: center;
+    .spinner-border {
+      color: func.theme-color(xl, 0.5);
+    }
   }
 }

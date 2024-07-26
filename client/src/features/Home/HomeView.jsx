@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RepositoryContext } from '@/utils/context';
 import messages from '@/models/businessMessages';
@@ -11,8 +11,8 @@ function Component() {
   const navigate = useNavigate();
   const $repositories = useContext(RepositoryContext);
 
-  const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     init();
@@ -37,25 +37,24 @@ function Component() {
   }
 
   return (
-    <Base>
-      <ProductListing>
-        {categories.length && (
-          <div className="carousel-section">
-            <div className="section-title">{messages.title.categories()}</div>
-            <CustomMiniItemCarousel
-              items={categories}
-              labelField="name"
-              onSelectItem={goToCategory}
-            />
-          </div>
-        )}
-        {brands.length && (
-          <div className="carousel-section">
-            <div className="section-title">{messages.title.brands()}</div>
-            <CustomMiniItemCarousel items={brands} labelField="name" onSelectItem={goToBrand} />
-          </div>
-        )}
-      </ProductListing>
+    <Base header={{ searchBox: true }}>
+      {!!categories.length && (
+        <div className="carousel-section">
+          <div className="section-title">{messages.title.categories()}</div>
+          <CustomMiniItemCarousel
+            items={categories}
+            labelField="name"
+            onSelectItem={goToCategory}
+          />
+        </div>
+      )}
+      {!!brands.length && (
+        <div className="carousel-section">
+          <div className="section-title">{messages.title.brands()}</div>
+          <CustomMiniItemCarousel items={brands} labelField="name" onSelectItem={goToBrand} />
+        </div>
+      )}
+      <ProductListing />
     </Base>
   );
 }

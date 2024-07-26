@@ -1,5 +1,5 @@
 function CustomLoading() {
-  return <></>
+  return <div>...loading</div>
 }
 
 export default CustomLoading;

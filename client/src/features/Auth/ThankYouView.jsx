@@ -19,17 +19,15 @@ function Component() {
 
   return (
     <Base>
-      <div className="main-content">
-        <CustomForm
-          className={`custom-form ${changeLayout ? 'small-screen-layout' : ''}`}
-          maxWidth="700px"
-        >
-          <div>
-            <div className="thank_you-label">Thank You For Registration</div>
-            <CustomButton onClick={goToNextPage}>{buttonText}</CustomButton>
-          </div>
-        </CustomForm>
-      </div>
+      <CustomForm
+        className={`custom-form ${changeLayout ? 'small-screen-layout' : ''}`}
+        maxWidth="700px"
+      >
+        <div>
+          <div className="thank_you-label">Thank You For Registration</div>
+          <CustomButton onClick={goToNextPage}>{buttonText}</CustomButton>
+        </div>
+      </CustomForm>
     </Base>
   );
 }

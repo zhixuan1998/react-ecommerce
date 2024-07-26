@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RepositoryContext } from '@/utils/context';
 import messages from '@/models/businessMessages';
@@ -12,11 +12,17 @@ function Component() {
   const { categoryId } = useParams();
   const $repositories = useContext(RepositoryContext);
 
-  const [category, setCategory] = useState(null);
+  const searchArea = useRef(null);
   const [categories, setCategories] = useState([]);
   const [searchAreaOptions, setSearchAreaOptions] = useState([]);
 
-  useEffect(async () => {
+  const category = categories.find((o) => o.categoryId === categoryId) ?? null;
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  async function init() {
     const [searchAreasResult, categoriesResult] = await Promise.all([
       $repositories.lookupRepository.getSearchProductAreas(),
       $repositories.categoryRepository.getAll({})
@@ -24,36 +30,35 @@ function Component() {
 
     setSearchAreaOptions(searchAreasResult.filter((o) => o.key !== 'brand'));
     setCategories(categoriesResult?.data?.data?.results ?? []);
-
-    setCategory(categories.value.find((o) => o.categoryId === categoryId) ?? null);
-  }, []);
-
-  useEffect(() => {
-    setCategory(categories.value.find((o) => o.categoryId === categoryId) ?? null);
-  }, [categoryId]);
+  }
 
   function goToCategory(item) {
     navigate(`/categories/${item.categoryId}`);
   }
 
   return (
-    <Base header={{ searchBox: true, searchAreaOptions }}>
-      <ProductListing>
-        {categories && (
-          <>
-            <div className="carousel-section">
-              <div className="section-title">
-                {messages.title.categories()} - {category?.name ?? ''}
-              </div>
+    <Base
+      header={{
+        searchBox: true,
+        searchOptions: searchAreaOptions,
+        onSearch: (value, option) => (searchArea.current = option)
+      }}
+    >
+      {categories && (
+        <>
+          <div className="carousel-section">
+            <div className="section-title">
+              {messages.title.categories()} - {category?.name ?? ''}
             </div>
-            <CustomMiniItemCarousel
-              items={categories}
-              labelField="name"
-              onSelectItem={goToCategory}
-            />
-          </>
-        )}
-      </ProductListing>
+          </div>
+          <CustomMiniItemCarousel
+            items={categories}
+            labelField="name"
+            onSelectItem={goToCategory}
+          />
+        </>
+      )}
+      <ProductListing searchArea={searchArea.current} />
     </Base>
   );
 }

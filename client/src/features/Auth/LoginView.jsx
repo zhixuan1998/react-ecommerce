@@ -104,41 +104,39 @@ function Component() {
 
   return (
     <Base title={messages.title.login()}>
-      <div className="main-content">
-        <CustomForm
-          header={{ title: 'Log In', description: 'Please enter your credentials' }}
-          maxWidth={maxWidth}
-        >
-          <div className="credential-section">
-            <CustomFormControl
-              inputValue={credentials.email}
-              setInputValue={setEmail}
-              label={messages.label.email()}
-              verticalLayout
-            >
-              {renderErrorMessage('email')}
-            </CustomFormControl>
+      <CustomForm
+        header={{ title: 'Log In', description: 'Please enter your credentials' }}
+        maxWidth={maxWidth}
+      >
+        <div className="credential-section">
+          <CustomFormControl
+            inputValue={credentials.email}
+            setInputValue={setEmail}
+            label={messages.label.email()}
+            verticalLayout
+          >
+            {renderErrorMessage('email')}
+          </CustomFormControl>
 
-            <CustomFormControl
-              inputValue={credentials.password}
-              setInputValue={setPassword}
-              label={messages.label.password()}
-              actualType="password"
-              maxLength={20}
-              verticalLayout
-            >
-              {renderErrorMessage('password')}
-            </CustomFormControl>
+          <CustomFormControl
+            inputValue={credentials.password}
+            setInputValue={setPassword}
+            label={messages.label.password()}
+            actualType="password"
+            maxLength={20}
+            verticalLayout
+          >
+            {renderErrorMessage('password')}
+          </CustomFormControl>
 
-            <CustomButton style={{ marginTop: '15px' }} onClick={login}>
-              {messages.button.login()}
-            </CustomButton>
-            <p className="forgot-password">{messages.label.forgotPassword()}</p>
-          </div>
-          <CustomSeparator text="OR" />
-          <CustomSocialLoginButtonGroup />
-        </CustomForm>
-      </div>
+          <CustomButton style={{ marginTop: '15px' }} onClick={login}>
+            {messages.button.login()}
+          </CustomButton>
+          <p className="forgot-password">{messages.label.forgotPassword()}</p>
+        </div>
+        <CustomSeparator text="OR" />
+        <CustomSocialLoginButtonGroup />
+      </CustomForm>
     </Base>
   );
 }

@@ -72,7 +72,6 @@ function App() {
       <div className="app-container">
         <Suspense fallback={<CustomLoading />}>
           <Outlet />
-          <CustomFooter />
           <div className="modal-overlay" style={{ display: modalDisplay }}>
             <Transition
               nodeRef={modalContainerRef}

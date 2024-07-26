@@ -2,11 +2,12 @@ import './auth.scss';
 
 import { useImmer } from 'use-immer';
 import { useState, useContext, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
 import { useValidation, useAuth } from '@/hooks';
 import messages from '@/models/businessMessages';
 import { validators } from '@/hooks/useValidation';
-import { ModalContext, RepositoryContext } from '@/utils/context';
+import { ModalContext } from '@/utils/context';
+import repositories from '@/../repositories';
 
 import Base from '../components/Base';
 import {
@@ -31,25 +32,26 @@ const initUserValue = {
 
 const maxWidth = '800px';
 
+async function loader() {
+  const $repositories = repositories();
+  const response = await $repositories.lookupRepository.getCountryPhoneCodes();
+
+  return { phoneCodes: response?.data?.data?.results ?? [] };
+}
+
 function Component() {
   const auth = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const $modal = useContext(ModalContext);
-  const $repositories = useContext(RepositoryContext);
 
+  const loader = useLoaderData();
   const [user, setUser] = useImmer(initUserValue);
   const [phoneCodes, setPhoneCodes] = useState([]);
 
   useEffect(() => {
-    getCountryPhoneCodes();
+    setPhoneCodes(loader.phoneCodes);
   }, []);
-
-  async function getCountryPhoneCodes() {
-    await $repositories.lookupRepository.getCountryPhoneCodes().then((response) => {
-      setPhoneCodes(response.data.data.results);
-    });
-  }
 
   function setUserProp(prop, value) {
     if (!Object.prototype.hasOwnProperty.call(user, prop)) return;
@@ -169,39 +171,37 @@ function Component() {
 
   return (
     <Base title={messages.title.signup()}>
-      <div className=" main-content">
-        <CustomForm
-          header={{ title: 'Sign Up', description: 'Please fill up the registration form' }}
-          maxWidth={maxWidth}
-        >
-          <div>
-            <div className="row">
-              {renderCustomFormControl('firstName')}
-              {renderCustomFormControl('lastName')}
-            </div>
-
-            <div className="row">
-              {renderCustomFormControl('email')}
-              {renderCustomFormControl('phoneNumber')}
-            </div>
-
-            <div className="row">{renderCustomFormControl('dob')}</div>
-
-            <div className="row">
-              {renderCustomFormControl('password')}
-              {renderCustomFormControl('confirmPassword')}
-            </div>
-
-            <CustomButton style={{ marginTop: '15px' }} onClick={signup}>
-              {messages.button.signup()}
-            </CustomButton>
+      <CustomForm
+        header={{ title: 'Sign Up', description: 'Please fill up the registration form' }}
+        maxWidth={maxWidth}
+      >
+        <div>
+          <div className="row">
+            {renderCustomFormControl('firstName')}
+            {renderCustomFormControl('lastName')}
           </div>
-          <CustomSeparator text="OR" />
-          <CustomSocialLoginButtonGroup />
-        </CustomForm>
-      </div>
+
+          <div className="row">
+            {renderCustomFormControl('email')}
+            {renderCustomFormControl('phoneNumber')}
+          </div>
+
+          <div className="row">{renderCustomFormControl('dob')}</div>
+
+          <div className="row">
+            {renderCustomFormControl('password')}
+            {renderCustomFormControl('confirmPassword')}
+          </div>
+
+          <CustomButton style={{ marginTop: '15px' }} onClick={signup}>
+            {messages.button.signup()}
+          </CustomButton>
+        </div>
+        <CustomSeparator text="OR" />
+        <CustomSocialLoginButtonGroup />
+      </CustomForm>
     </Base>
   );
 }
 
-export { Component };
+export { Component, loader };

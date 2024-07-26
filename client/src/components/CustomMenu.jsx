@@ -20,33 +20,24 @@ function CustomMenu(props) {
   } = { ...defaultMenuProps, ...menuProps };
 
   const [searchValue, setSearchValue] = useState('');
-  const [filteredOptions, setFilteredOptions] = useState(options);
+
+  const filteredOptions = options.filter((o) => {
+    const escapedInputValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') ?? '';
+    const regex = new RegExp(`.*${escapedInputValue}.*`, 'i');
+    const value = typeof valueField === 'function' ? valueField(o) : o[valueField];
+    return regex.test(value);
+  });
 
   useEffect(() => {
-    if (visible === true) {
+    if (visible === false) {
       setTimeout(() => setSearchValue(''), 150);
     }
   }, [visible]);
-
-  useEffect(() => {
-    setFilteredOptions(options);
-  }, [options]);
 
   async function selectItem(item) {
     setSelectedItem(await item[keyField]);
     setVisible(false);
     await item.fn?.();
-  }
-
-  function search(inputValue) {
-    setFilteredOptions(
-      options.filter((o) => {
-        const escapedInputValue = inputValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`.*${escapedInputValue}.*`, 'i');
-        const value = typeof valueField === 'function' ? valueField(o) : o[valueField];
-        return regex.test(value);
-      })
-    );
   }
 
   // JSX
@@ -58,10 +49,7 @@ function CustomMenu(props) {
             <input
               value={searchValue}
               readOnly={!searchable}
-              onInput={(e) => {
-                setSearchValue(e.target.value);
-                search(e.target.value);
-              }}
+              onInput={(e) => setSearchValue(e.target.value)}
             />
           </span>
         )}

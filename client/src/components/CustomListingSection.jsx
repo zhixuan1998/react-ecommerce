@@ -20,7 +20,7 @@ function CustomListingSection({ children, minItemWidthInPx = 20, gapWidthInPx = 
           columnCount -= 1;
           totalGapWidth -= gapWidthInPx;
         }
-        sectionEl.current.style.setProperty('--item-width', `${getItemWidth()}px`);
+        sectionEl.current?.style.setProperty('--item-width', `${getItemWidth()}px`);
       }
     });
 

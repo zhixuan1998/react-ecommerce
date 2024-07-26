@@ -1,12 +1,12 @@
-import './index.scss';
-import './assets/styles/main.scss';
+import '@/index.scss';
+import '@/assets/styles/main.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider as StoreProvider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 
-import router from './router';
+import router from '@/router';
 import store from '@/app/store';
 import config from '../appsettings';
 import createRepositories from '../repositories';

@@ -25,8 +25,11 @@ function CustomSearchBox({
 
   useEffect(() => {
     initDropdownValue();
+  }, [searchOptions]);
+
+  useEffect(() => {
     initInputValue();
-  }, []);
+  }, [searchParams.get('search')]);
 
   function search() {
     const notFunction = typeof onSearch !== 'function';
@@ -48,7 +51,7 @@ function CustomSearchBox({
   }
 
   function initDropdownValue() {
-    if (searchOptions.length) return setDropdownValue('');
+    if (!searchOptions.length) return setDropdownValue('');
 
     const newDropdownValue = searchDropdown?.keyField
       ? searchOptions[0][searchDropdown.keyField]
@@ -73,11 +76,13 @@ function CustomSearchBox({
         }}
         onInput={(e) => setInputValue(e.target.value)}
       />
-      {searchOptions.length && (
+      {!!searchOptions.length && (
         <CustomDropdown
-          selectedItem={dropdownValue}
-          setSelectedItem={setDropdownValue}
-          options={searchOptions}
+          menu={{
+            selectedItem: dropdownValue,
+            setSelectedItem: setDropdownValue,
+            options: searchOptions,
+          }}
         />
       )}
       <div className="icon-wrapper" onClick={search}>

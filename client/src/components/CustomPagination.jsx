@@ -27,15 +27,9 @@ function CustomPagination({
   beforeUpdate,
   disabled = false
 }) {
-  const isMounted = useRef(false);
-
-  if (!isMounted.current) {
-    const newCurrrentPage = currentPage < totalPages && currentPage > 0 ? currentPage : 1;
-    setCurrentPage(newCurrrentPage);
-  }
-
   useEffect(() => {
-    isMounted.current = true;
+    const newCurrentPage = currentPage < totalPages && currentPage > 0 ? currentPage : 1;
+    setCurrentPage(newCurrentPage);
   }, []);
 
   const isFirstThree = currentPage <= 3;
@@ -91,13 +85,13 @@ function CustomPagination({
     <div className={`pagination-indicator-container ${disabled ? 'disabled' : ''}`}>
       <span
         className={`indicator-button ${isFirstThree || noRest ? 'disabled' : ''}`}
-        onClick={beforeMove(PAGE_MOVEMENT.START)}
+        onClick={() => beforeMove(PAGE_MOVEMENT.START)}
       >
         <FontAwesomeIcon icon={faAnglesLeft} />
       </span>
       <span
         className={`indicator-button ${currentPage === 1 ? 'disabled' : ''}`}
-        onClick={beforeMove(PAGE_MOVEMENT.BACKWARD)}
+        onClick={() => beforeMove(PAGE_MOVEMENT.BACKWARD)}
       >
         <FontAwesomeIcon icon={faAngleLeft} />
       </span>
@@ -108,7 +102,7 @@ function CustomPagination({
             item === rest ? 'rest' : ''
           }`}
           key={i}
-          onClick={beforeMove(item)}
+          onClick={() => beforeMove(item)}
         >
           {item}
         </span>
@@ -116,13 +110,13 @@ function CustomPagination({
 
       <span
         className={`indicator-button ${currentPage === totalPages ? 'disabled' : ''}`}
-        onClick={beforeMove(PAGE_MOVEMENT.FORWARD)}
+        onClick={() => beforeMove(PAGE_MOVEMENT.FORWARD)}
       >
         <FontAwesomeIcon icon={faAngleRight} />
       </span>
       <span
         className={`indicator-button ${isLastThree || noRest ? 'disabled' : ''}`}
-        onClick={beforeMove(PAGE_MOVEMENT.END)}
+        onClick={() => beforeMove(PAGE_MOVEMENT.END)}
       >
         <FontAwesomeIcon icon={faAnglesRight} />
       </span>

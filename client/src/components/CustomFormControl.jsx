@@ -79,7 +79,7 @@ function CustomFormControl({
                 options,
                 keyField: prependDropdown.keyField,
                 valueField: prependDropdown.valueField,
-                searchable
+                searchable: true
               }}
             />
           )}

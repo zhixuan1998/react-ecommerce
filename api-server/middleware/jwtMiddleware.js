@@ -7,7 +7,7 @@ const { verify, TokenExpiredError } = jwt;
 
 module.exports = async (req, res, next) => {
     try {
-        await new Promise((resolve) => setTimeout(() => resolve(), 1000));
+        // await new Promise((resolve) => setTimeout(() => resolve(), 1000));
 
         const authToken = req.headers["authorization"];
 

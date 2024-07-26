@@ -1,10 +1,24 @@
-import { CustomHeader } from '@/components';
+import { useSearchParams } from 'react-router-dom';
+import { CustomHeader, CustomFooter } from '@/components';
 
 function BaseView({ children, title, header = {} }) {
+  const [, setSearchParams] = useSearchParams();
+
+  function handleSearch(value, option) {
+    if (typeof header.onSearch === 'function') {
+      header.onSearch(value, option);
+    }
+
+    setSearchParams({ search: value });
+  }
+
   return (
     <>
-      <CustomHeader {...header}>{!!title && title}</CustomHeader>
-      {children}
+      <CustomHeader {...header} onSearch={handleSearch}>
+        {!!title && title}
+      </CustomHeader>
+      <div className="main-content">{children}</div>
+      <CustomFooter />
     </>
   );
 }

@@ -77,8 +77,8 @@ function CustomMenu(props) {
 
   return (
     <div
-      className={`menu-container custom-menu ${animation ? 'animation' : ''} ${
-        visible ? 'open' : ''
+      className={`menu-container custom-menu${animation ? ' animation' : ''}${
+        visible ? ' open' : ''
       }`}
       style={{ maxHeight: menuHeight, ...style }}
     >

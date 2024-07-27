@@ -23,39 +23,29 @@ const routes = [
     lazy: HomeView
   },
   {
-    path: '',
-    children: [
-      {
-        path: 'login',
-        lazy: LoginView
-      },
-      {
-        path: 'signup',
-        lazy: SignupView
-      },
-      {
-        path: 'thank-you',
-        lazy: ThankYouView
-      }
-    ]
+    path: 'login',
+    lazy: LoginView
   },
   {
-    path: '',
-    children: [
-      {
-        path: 'brands/:brandId',
-        lazy: BrandView
-      },
-      {
-        path: 'categories/:categoryId',
-        lazy: CategoryView
-      },
-      {
-        path: 'products/:productId',
-        lazy: ProductDetailView
-      }
-    ]
-  }
+    path: 'signup',
+    lazy: SignupView
+  },
+  {
+    path: 'thank-you',
+    lazy: ThankYouView
+  },
+  {
+    path: 'brands/:brandId',
+    lazy: BrandView
+  },
+  {
+    path: 'categories/:categoryId',
+    lazy: CategoryView
+  },
+  {
+    path: 'products/:productId',
+    lazy: ProductDetailView
+  },
 ];
 
 const router = createBrowserRouter([

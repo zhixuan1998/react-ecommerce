@@ -36,11 +36,10 @@ function CustomPopover({
 
   return (
     <div
-      className={`popover-container popover-${direction}`}
+      className={`popover-container popover-${direction} ${open ? 'd-block' : 'd-none'}`}
       popover-id={popoverId}
-      style={{ display: open ? 'block' : 'none' }}
     >
-      <CustomMenu {...menu} style={{ width: 'max-content' }} />
+      <CustomMenu {...menu} />
     </div>
   );
 }

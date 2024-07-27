@@ -1,14 +1,14 @@
 .popover-container {
   --arrow-side-gap: 100%;
   --arrow-height: 10px;
-  --padding: calc(var(--arrow-height) / 2);
+  --padding: calc((var(--arrow-height) / 2) - 0.5px);
 
   position: absolute;
   background-color: rgba(0, 0, 0, 0);
+  width: max-content;
   z-index: 10;
 
-  .menu-container {
-    width: max-content;
+  .custom-menu.menu-container {
     border: 1px solid #{func.theme-color(l, 0.6)};
     position: static;
   }
@@ -22,6 +22,7 @@
     border-right-width: 0;
     border-bottom-width: 0;
     background-image: linear-gradient(135deg, #fff 0%, #fff 52%, transparent 52%, transparent 100%);
+    z-index: 10;
   }
 
   &.popover-top {

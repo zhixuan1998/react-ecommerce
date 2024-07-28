@@ -68,6 +68,8 @@ function Component() {
   async function login() {
     $v.$touch();
 
+    if ($v.$error) return;
+
     const success = await auth.login(credentials);
 
     if (success) {

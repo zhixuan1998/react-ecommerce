@@ -1,6 +1,6 @@
 import './App.scss';
 
-import { useState, useRef, useEffect, Suspense } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Transition } from 'react-transition-group';
 
@@ -8,9 +8,6 @@ import { useAuth } from '@/hooks';
 import { noop } from '@/utils/is';
 import { ModalContext } from '@/utils/context';
 import messages from '@/models/businessMessages';
-
-import CustomLoading from '@/components/CustomLoading.jsx';
-import { CustomFooter } from '@/components';
 
 const initModalValue = {
   title: '',
@@ -70,43 +67,41 @@ function App() {
   return (
     <ModalContext.Provider value={contextValue}>
       <div className="app-container">
-        <Suspense fallback={<CustomLoading />}>
-          <Outlet />
-          <div className="modal-overlay" style={{ display: modalDisplay }}>
-            <Transition
-              nodeRef={modalContainerRef}
-              in={inTransitioning}
-              timeout={transitionDurationInMs}
-              onExited={hideModal}
-            >
-              {(state) => {
-                const isEntering = state === 'entering';
-                const isExiting = state === 'exiting';
+        <Outlet />
+        <div className="modal-overlay" style={{ display: modalDisplay }}>
+          <Transition
+            nodeRef={modalContainerRef}
+            in={inTransitioning}
+            timeout={transitionDurationInMs}
+            onExited={hideModal}
+          >
+            {(state) => {
+              const isEntering = state === 'entering';
+              const isExiting = state === 'exiting';
 
-                return (
+              return (
+                <div
+                  className={`modal-container ${isEntering ? 'bounce-enter-active' : ''} ${
+                    isExiting ? 'bounce-leave-active' : ''
+                  }`}
+                  ref={modalContainerRef}
+                >
+                  <div className="title">{modal.title}</div>
+                  <div className="body">{modal.message}</div>
                   <div
-                    className={`modal-container ${isEntering ? 'bounce-enter-active' : ''} ${
-                      isExiting ? 'bounce-leave-active' : ''
-                    }`}
-                    ref={modalContainerRef}
+                    className="button"
+                    onClick={() => {
+                      exitTransition();
+                      modal.onClose();
+                    }}
                   >
-                    <div className="title">{modal.title}</div>
-                    <div className="body">{modal.message}</div>
-                    <div
-                      className="button"
-                      onClick={() => {
-                        exitTransition();
-                        modal.onClose();
-                      }}
-                    >
-                      {modal.buttonText}
-                    </div>
+                    {modal.buttonText}
                   </div>
-                );
-              }}
-            </Transition>
-          </div>
-        </Suspense>
+                </div>
+              );
+            }}
+          </Transition>
+        </div>
       </div>
     </ModalContext.Provider>
   );

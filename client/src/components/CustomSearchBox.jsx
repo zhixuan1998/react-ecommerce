@@ -1,27 +1,32 @@
 import './CustomSearchBox.scss';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { defaultProps } from './defaultProps.js';
 import { noop } from '@/utils/is';
 
 import CustomDropdown from './CustomDropdown.jsx';
 
-function CustomSearchBox({
-  searchOptions = [],
-  searchDropdown,
-  onSearch = noop,
-  placeholder = 'Search',
-  readonly = false,
-  width = '100%'
-}) {
+function CustomSearchBox(props) {
+  const {
+    searchOptions = [],
+    searchDropdown,
+    onSearch = noop,
+    placeholder = 'Search',
+    readonly = false,
+    width = '100%',
+    className,
+    style
+  } = { ...defaultProps, ...props };
+
   const [inputValue, setInputValue] = useState('');
   const [dropdownValue, setDropdownValue] = useState('');
   const [searchParams] = useSearchParams();
 
-  let previousInputValue = '';
-  let previousDropdownValue = '';
+  const previousInputValue = useRef('');
+  const previousDropdownValue = useRef('');
 
   useEffect(() => {
     initDropdownValue();
@@ -35,15 +40,16 @@ function CustomSearchBox({
     const notFunction = typeof onSearch !== 'function';
     const noInputValue = inputValue.length === 0;
     const noValueChange =
-      inputValue === previousInputValue && dropdownValue === previousDropdownValue;
+      inputValue === previousInputValue.current && dropdownValue === previousDropdownValue.current;
 
     if (notFunction || noInputValue || noValueChange) {
       return;
     }
 
     onSearch(inputValue, dropdownValue);
-    previousInputValue = inputValue;
-    previousDropdownValue = dropdownValue;
+
+    previousInputValue.current = inputValue;
+    previousDropdownValue.current = dropdownValue;
   }
 
   function initInputValue() {
@@ -65,7 +71,7 @@ function CustomSearchBox({
   }, [searchOptions]);
 
   return (
-    <div className="search_box-container" style={{ width }}>
+    <div className={`search_box-container${className ? ` ${className}` : ''}`} style={{ ...style, width }}>
       <input
         className="input"
         value={inputValue}
@@ -81,7 +87,7 @@ function CustomSearchBox({
           menu={{
             selectedItem: dropdownValue,
             setSelectedItem: setDropdownValue,
-            options: searchOptions,
+            options: searchOptions
           }}
         />
       )}

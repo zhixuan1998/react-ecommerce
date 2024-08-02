@@ -2,9 +2,18 @@ import './CustomMiniItemCarousel.scss';
 
 import { useRef, useEffect, useState } from 'react';
 import { register } from 'swiper/element/bundle';
+import { defaultProps } from './defaultProps';
 import { noop } from '@/utils/is.js';
 
-function CustomMiniItemCarousel({ items = [], labelField, onSelectItem = noop }) {
+function CustomMiniItemCarousel(props) {
+  const {
+    items = [],
+    labelField,
+    onSelectItem = noop,
+    className,
+    style
+  } = { ...defaultProps, ...props };
+
   const swiperRef = useRef(null);
   const [formattedItems, setFormattedItems] = useState([]);
 
@@ -12,7 +21,6 @@ function CustomMiniItemCarousel({ items = [], labelField, onSelectItem = noop })
     register();
 
     const config = {
-      slidePerView: 4,
       slidesPerGroup: 2,
       breakpointsBase: 'container',
       breakpoints: {
@@ -24,6 +32,9 @@ function CustomMiniItemCarousel({ items = [], labelField, onSelectItem = noop })
         },
         400: {
           slidesPerView: 6
+        },
+        0: {
+          slidesPerView: 4
         }
       }
     };
@@ -59,7 +70,9 @@ function CustomMiniItemCarousel({ items = [], labelField, onSelectItem = noop })
           <img
             src={item.logoUrl}
             className="rounded-circle"
-            onError={() => (this.src = 'https://picsum.photos/200')}
+            onError={function () {
+              this.src = 'https://picsum.photos/200';
+            }}
           />
         </div>
         {item[labelField] && <p className="item-label">{item[labelField]}</p>}
@@ -68,7 +81,12 @@ function CustomMiniItemCarousel({ items = [], labelField, onSelectItem = noop })
   }
 
   return (
-    <swiper-container class="swiper-container" init={false} ref={swiperRef}>
+    <swiper-container
+      class={`swiper-container${className ? ` ${className}` : ''}`}
+      style={style}
+      init={false}
+      ref={swiperRef}
+    >
       {renderSwiperColumns()}
     </swiper-container>
   );

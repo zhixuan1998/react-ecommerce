@@ -40,13 +40,13 @@ function ProductListing({ searchArea }) {
   }, []);
 
   async function init() {
-    const result = await $repositories.lookupRepository.getRecordPerPageOptions();
+    const [, result] = await $repositories.lookupRepository.getRecordPerPageOptions();
     perPageOptions.current = result;
   }
 
   useEffect(() => {
     beforeGetProducts();
-  }, [search, brandId, categoryId, perPage]);
+  }, [search, brandId, categoryId, perPage, searchArea]);
 
   async function beforeGetProducts() {
     const old = previousDeps.current;
@@ -68,7 +68,7 @@ function ProductListing({ searchArea }) {
 
     setIsLoading(true);
 
-    const response = await $repositories.productRepository.getAll(filter);
+    const [, response] = await $repositories.productRepository.getAll(filter);
 
     pagination.current = response?.data?.data?.pagination ?? null;
     setProducts(response?.data?.data?.results ?? []);

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RepositoryContext } from '@/utils/context';
 import messages from '@/models/businessMessages';
@@ -19,7 +19,7 @@ function Component() {
   }, []);
 
   async function init() {
-    const [categoriesResult, brandsResult] = await Promise.all([
+    const [[, categoriesResult], [, brandsResult]] = await Promise.all([
       $repositories.categoryRepository.getAll({}),
       $repositories.brandRepository.getAll({})
     ]);

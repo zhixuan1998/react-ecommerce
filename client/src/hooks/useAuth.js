@@ -10,9 +10,9 @@ function useAuth() {
     async function login({ email, password }) {
         const encodedPassword = btoa(password);
 
-        const response = await httpClient.post(`users/login`, { email, password: encodedPassword });
+        const [error, response] = await httpClient.post(`users/login`, { email, password: encodedPassword });
 
-        if (isAxiosError(response)) {
+        if (error) {
             return false;
         }
 
@@ -25,7 +25,7 @@ function useAuth() {
     async function register({ firstName, lastName, email, dob, phoneCode, phoneNumber, password }) {
         const encodedPassword = btoa(password);
 
-        const response = await httpClient.post(`users/register`, {
+        const [error] = await httpClient.post(`users/register`, {
             firstName,
             lastName,
             email,
@@ -35,7 +35,7 @@ function useAuth() {
             password: encodedPassword
         });
 
-        if (isAxiosError(response)) {
+        if (error) {
             return false;
         }
 
@@ -45,12 +45,12 @@ function useAuth() {
     }
 
     async function socialLogin({ accessToken, provider }) {
-        const response = await httpClient.post(`users/socialLogin`, {
+        const [error] = await httpClient.post(`users/socialLogin`, {
             accessToken,
             provider
         });
 
-        if (isAxiosError(response)) {
+        if (error) {
             return false;
         }
 
@@ -63,9 +63,9 @@ function useAuth() {
     async function getUser() {
         if (!localStorage.getItem('accessToken')) return;
 
-        const response = await httpClient.get(`users`);
+        const [, response] = await httpClient.get(`users`);
 
-        if (!isAxiosError(response) && response.data?.data) {
+        if (response?.data?.data) {
             dispatch(userSlice.updateUser(response.data.data));
         }
     }
@@ -73,9 +73,9 @@ function useAuth() {
     async function logout() {
         const headers = { Authorization: `Bearer ${localStorage.getItem('accessToken')}` };
 
-        const response = await httpClient.post(`users/logout`, { headers });
+        const [error] = await httpClient.post(`users/logout`, { headers });
 
-        if (isAxiosError(response)) {
+        if (error) {
             localStorage.removeItem('accessToken');
         }
     }

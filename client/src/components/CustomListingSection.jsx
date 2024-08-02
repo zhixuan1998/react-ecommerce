@@ -1,8 +1,17 @@
 import './CustomListingSection.scss';
 
 import { useRef, useEffect } from 'react';
+import { defaultProps } from './defaultProps';
 
-function CustomListingSection({ children, minItemWidthInPx = 20, gapWidthInPx = 10 }) {
+function CustomListingSection(props) {
+  const {
+    children,
+    minItemWidthInPx = 20,
+    gapWidthInPx = 10,
+    className,
+    style
+  } = { ...defaultProps, ...props };
+
   const sectionEl = useRef(null);
   let resizeObserver = null;
 
@@ -30,7 +39,11 @@ function CustomListingSection({ children, minItemWidthInPx = 20, gapWidthInPx = 
   }, []);
 
   return (
-    <div className="listing-section" ref={sectionEl}>
+    <div
+      className={`listing-section${className ? ` ${className}` : ''}`}
+      style={style}
+      ref={sectionEl}
+    >
       {children}
     </div>
   );

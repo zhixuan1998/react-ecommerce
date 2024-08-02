@@ -1,7 +1,7 @@
 import './CustomMenu.scss';
 
 import { useState, useEffect } from 'react';
-import { defaultMenuProps } from './defaultProps.js';
+import { defaultProps, defaultMenuProps } from './defaultProps.js';
 
 function CustomMenu(props) {
   const { children, ...menuProps } = props;
@@ -17,8 +17,9 @@ function CustomMenu(props) {
     searchable,
     menuHeight,
     animation,
+    className,
     style
-  } = { ...defaultMenuProps, ...menuProps };
+  } = { ...defaultProps, ...defaultMenuProps, ...menuProps };
 
   const [searchValue, setSearchValue] = useState('');
 
@@ -79,7 +80,7 @@ function CustomMenu(props) {
     <div
       className={`menu-container custom-menu${animation ? ' animation' : ''}${
         visible ? ' open' : ''
-      }`}
+      }${className ? ` ${className}` : ''}`}
       style={{ maxHeight: menuHeight, ...style }}
     >
       {children}

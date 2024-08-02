@@ -19,3 +19,13 @@
 
     @return rgba(list.nth($value, 1), list.nth($value, 2), list.nth($value, 3), $opacity);
 }
+
+@function breakpoint($size: m) {
+    $value: map-get(var.$breakpoints, $size);
+
+    @if $value == null {
+        @error "Unknown breakpoint `#{$depth}`.";
+    }
+
+    @return $value;
+}

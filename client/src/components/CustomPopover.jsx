@@ -2,18 +2,22 @@ import './CustomPopover.scss';
 
 import { useEffect } from 'react';
 
-import { defaultMenuProps } from './defaultProps.js';
+import { defaultProps, defaultMenuProps } from './defaultProps.js';
 import { intersectProps } from './utils/props.js';
 
 import CustomMenu from './CustomMenu.jsx';
 
-function CustomPopover({
-  // displayField = 'value',
-  open = false,
-  relativeParentClass,
-  direction = 'bottom',
-  menu: menuProps = defaultMenuProps
-}) {
+function CustomPopover(props) {
+  const {
+    // displayField = 'value',
+    open = false,
+    relativeParentClass,
+    direction = 'bottom',
+    menu: menuProps = defaultMenuProps,
+    className,
+    style
+  } = { ...defaultProps, ...props };
+
   const popoverId = `popover-${new Date().getTime()}`;
 
   const menu = intersectProps({ ...menuProps, visible: true }, defaultMenuProps);
@@ -36,7 +40,10 @@ function CustomPopover({
 
   return (
     <div
-      className={`popover-container popover-${direction} ${open ? 'd-block' : 'd-none'}`}
+      className={`popover-container popover-${direction} ${open ? 'd-block' : 'd-none'}${
+        className ? ` ${className}` : ''
+      }`}
+      style={style}
       popover-id={popoverId}
     >
       <CustomMenu {...menu} />

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { RepositoryContext } from '@/utils/context';
 import messages from '@/models/businessMessages';
 
@@ -23,7 +23,7 @@ function Component() {
   }, []);
 
   async function init() {
-    const [searchAreasResult, categoriesResult] = await Promise.all([
+    const [[, searchAreasResult], [, categoriesResult]] = await Promise.all([
       $repositories.lookupRepository.getSearchProductAreas(),
       $repositories.categoryRepository.getAll({})
     ]);
@@ -45,18 +45,18 @@ function Component() {
       }}
     >
       {categories && (
-        <>
-          <div className="carousel-section">
-            <div className="section-title">
+        <div className="carousel-section">
+          <div className="section-title">
+            <Link to={`/categories/${categoryId}`} className="section-title">
               {messages.title.categories()} - {category?.name ?? ''}
-            </div>
+            </Link>
           </div>
           <CustomMiniItemCarousel
             items={categories}
             labelField="name"
             onSelectItem={goToCategory}
           />
-        </>
+        </div>
       )}
       <ProductListing searchArea={searchArea.current} />
     </Base>

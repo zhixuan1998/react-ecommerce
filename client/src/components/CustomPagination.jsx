@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { noop } from '@/utils/is';
+import { defaultProps } from './defaultProps';
 
 const PAGE_MOVEMENT = {
   FORWARD: 'forward',
@@ -20,13 +21,17 @@ const PAGE_MOVEMENT = {
 
 const rest = '...';
 
-function CustomPagination({
-  currentPage,
-  setCurrentPage = noop,
-  totalPages = 1,
-  beforeUpdate,
-  disabled = false
-}) {
+function CustomPagination(props) {
+  const {
+    currentPage,
+    setCurrentPage = noop,
+    totalPages = 1,
+    beforeUpdate,
+    disabled = false,
+    className,
+    style
+  } = { ...defaultProps, ...props };
+
   useEffect(() => {
     const newCurrentPage = currentPage < totalPages && currentPage > 0 ? currentPage : 1;
     setCurrentPage(newCurrentPage);
@@ -82,7 +87,12 @@ function CustomPagination({
   }
 
   return (
-    <div className={`pagination-indicator-container ${disabled ? 'disabled' : ''}`}>
+    <div
+      className={`pagination-indicator-container${disabled ? ' disabled' : ''}${
+        className ? ` ${className}` : ''
+      }`}
+      style={style}
+    >
       <span
         className={`indicator-button ${isFirstThree || noRest ? 'disabled' : ''}`}
         onClick={() => beforeMove(PAGE_MOVEMENT.START)}

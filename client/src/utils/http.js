@@ -2,12 +2,17 @@ import axios from 'axios';
 import config from '../../appsettings';
 import $repositories from '../../repositories';
 
-// console.log($repositories)
-// const $repositories = repositories(config);
+const ERROR_CODE = {
+    TOKEN_EXPIRED: 1100,
+    FINGERPRINT_MISMATCH: 1102
+};
+
 let isRefreshing = false;
 let queue = [];
 
-const BASIC_AUTH = `Basic ${btoa(`${config.service.security.clientId}:${config.service.security.clientSecret}`)}`;
+const BASIC_AUTH = `Basic ${btoa(
+    `${config.service.security.clientId}:${config.service.security.clientSecret}`
+)}`;
 
 const httpClient = axios.create({
     baseURL: config.service.baseURL,
@@ -15,42 +20,46 @@ const httpClient = axios.create({
 });
 
 httpClient.interceptors.request.use(async (config) => {
-    config.headers['Authorization'] = localStorage.getItem('accessToken') === null ? BASIC_AUTH : `Bearer ${localStorage.getItem('accessToken')}`;
+    config.headers['Authorization'] =
+        localStorage.getItem('accessToken') === null
+            ? BASIC_AUTH
+            : `Bearer ${localStorage.getItem('accessToken')}`;
     return config;
 });
 
 httpClient.interceptors.response.use(
-    (res) => res,
+    (res) => [null, res],
     async (error) => {
+        console.log(error)
         const { status, data } = error.response ?? {};
 
         const originalRequest = error.config;
 
-        const IS_TOKEN_EXPIRED_ERROR = isUnauthorizedError(status, data, ERROR_CODES.TOKEN_EXPIRED);
-        const IS_FINGERPRINT_MISMATCH_ERROR = isUnauthorizedError(status, data, ERROR_CODES.FINGERPRINT_MISMATCH);
+        const IS_TOKEN_EXPIRED_ERROR = isUnauthorizedError(status, data, ERROR_CODE.TOKEN_EXPIRED);
+        const IS_FINGERPRINT_MISMATCH_ERROR = isUnauthorizedError(
+            status,
+            data,
+            ERROR_CODE.FINGERPRINT_MISMATCH
+        );
 
         if (IS_TOKEN_EXPIRED_ERROR || IS_FINGERPRINT_MISMATCH_ERROR) {
             localStorage.removeItem('accessToken');
         }
 
         if (IS_TOKEN_EXPIRED_ERROR) {
-            return handleTokenExpiredError(originalRequest);
+            return [handleTokenExpiredError(originalRequest)];
         }
 
         if (IS_FINGERPRINT_MISMATCH_ERROR) {
-            return handleFingerprintMismatchError(originalRequest);
+            return [handleFingerprintMismatchError(originalRequest)];
         }
 
-        return error;
+        return [error];
     }
 );
 
-const ERROR_CODES = {
-    TOKEN_EXPIRED: 1100,
-    FINGERPRINT_MISMATCH: 1102
-};
-
-const isUnauthorizedError = (status, data, errorCode) => status === 401 && data?.status.code === errorCode;
+const isUnauthorizedError = (status, data, errorCode) =>
+    status === 401 && data?.status.code === errorCode;
 
 /**
  * Handles the case when a token expires during an HTTP request.

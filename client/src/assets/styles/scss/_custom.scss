@@ -2,7 +2,12 @@
 @use "mixins" as mix;
 @use "functions" as func;
 
+* {
+    font-family: NotoSans-Regular, "Microsoft JhengHei UI", Poppins, Roboto, sans-serif;
+}
+
 body {
+    --bs-body-font-weight: 500;
     overflow-x: hidden;
 }
 
@@ -22,17 +27,9 @@ input {
     row-gap: 5px;
     background-color: func.theme-color(xs);
 
-    * {
-        font-family: NotoSans-Regular, "Microsoft JhengHei UI", Poppins, Roboto, sans-serif;
-    }
-
     > * {
         margin-left: auto;
         margin-right: auto;
-
-        @media (width < 576px) {
-            padding: 0 5px;
-        }
     }
 
     [class*="-section"] {
@@ -47,7 +44,7 @@ input {
     }
 
     @media (width < 576px) {
-        padding: 0;
+        padding: 5px;
         row-gap: 0;
 
         .section-title {

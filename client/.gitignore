@@ -34,3 +34,5 @@ Noto_Sans.zip
 .firebase
 .firebaserc
 firebase.json
+
+*.txt

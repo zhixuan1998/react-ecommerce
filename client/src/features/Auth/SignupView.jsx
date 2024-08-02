@@ -34,7 +34,7 @@ const maxWidth = '800px';
 
 async function loader() {
   const $repositories = repositories();
-  const response = await $repositories.lookupRepository.getCountryPhoneCodes();
+  const [, response] = await $repositories.lookupRepository.getCountryPhoneCodes();
 
   return { phoneCodes: response?.data?.data?.results ?? [] };
 }

@@ -1,7 +1,8 @@
 .popover-container {
+  --parent-gap: 5px;
   --arrow-side-gap: 100%;
-  --arrow-height: 10px;
-  --padding: calc((var(--arrow-height) / 2) - 0.5px);
+  --arrow-height: 15px;
+  --padding: calc((var(--arrow-height) / 2) + var(--parent-gap));
 
   position: absolute;
   background-color: rgba(0, 0, 0, 0);
@@ -11,6 +12,10 @@
   .custom-menu.menu-container {
     border: 1px solid #{func.theme-color(l, 0.6)};
     position: static;
+
+    .menu-content .menu-item {
+      padding: 10px 15px;
+    }
   }
 
   &::after {
@@ -32,7 +37,7 @@
     &::after {
       left: 0;
       bottom: 0;
-      transform: translateX(var(--arrow-side-gap)) rotate(225deg);
+      transform: translate3d(var(--arrow-side-gap), calc(var(--parent-gap) * -1), 0) rotate(225deg);
     }
   }
 
@@ -43,7 +48,7 @@
     &::after {
       top: 0;
       left: 0;
-      transform: translateX(var(--arrow-side-gap)) rotate(45deg);
+      transform: translate3d(var(--arrow-side-gap), var(--parent-gap), 0) rotate(45deg);
     }
   }
 
@@ -55,7 +60,7 @@
     &::after {
       top: 0;
       right: 0;
-      transform: translateY(var(--arrow-side-gap)) rotate(135deg);
+      transform: translate3d(calc(var(--parent-gap) * -1), var(--arrow-side-gap), 0) rotate(135deg);
     }
   }
 
@@ -67,7 +72,7 @@
     &::after {
       top: 0;
       left: 0;
-      transform: translateY(var(--arrow-side-gap)) rotate(-45deg);
+      transform: translate3d(var(--parent-gap), var(--arrow-side-gap), 0) rotate(-45deg);
     }
   }
 }

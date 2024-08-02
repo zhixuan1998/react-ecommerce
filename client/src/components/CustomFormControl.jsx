@@ -4,6 +4,7 @@ import 'flatpickr/dist/flatpickr.min.css';
 import { useState, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { defaultProps } from './defaultProps.js';
 import { noop } from '@/utils/is';
 
 import CustomDropdown from './CustomDropdown.jsx';
@@ -12,22 +13,24 @@ import CustomDatetimePicker from './CustomDatetimePicker.jsx';
 const defaultType = 'text';
 const validTypes = [defaultType, 'password', 'number', 'calendar'];
 
-function CustomFormControl({
-  children,
-  inputValue,
-  setInputValue = noop,
-  prependValue,
-  setPrependValue = noop,
-  actualType = defaultType,
-  label = 'Label',
-  maxLength = 255,
-  prependDropdown = null,
-  options = [],
-  searchable = false,
-  verticalLayout = false,
-  readonly = false,
-  className
-}) {
+function CustomFormControl(props) {
+  const {
+    children,
+    inputValue,
+    setInputValue = noop,
+    prependValue,
+    setPrependValue = noop,
+    actualType = defaultType,
+    label = 'Label',
+    maxLength = 255,
+    prependDropdown = null,
+    options = [],
+    verticalLayout = false,
+    readonly = false,
+    className,
+    style
+  } = { ...defaultProps, ...props };
+
   const isPassword = actualType === 'password';
   const isCalendar = actualType === 'calendar';
 
@@ -62,7 +65,7 @@ function CustomFormControl({
   }
 
   return (
-    <div className={`input-container ${className ?? ''}`}>
+    <div className={`input-container${className ? ` ${className}` : ''}`} style={style}>
       <div className={`main ${verticalLayout ? 'vertical-layout' : ''}`}>
         <label className="label">{label}</label>
         <div className="input-wrapper">

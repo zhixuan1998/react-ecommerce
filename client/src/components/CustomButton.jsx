@@ -1,19 +1,24 @@
 import './CustomButton.scss';
-import { noop } from '@/utils/is';
 
-function CustomButton({
-  children,
-  style = {},
-  color = 'primary',
-  disabled = false,
-  onClick = noop
-}) {
+import { noop } from '@/utils/is';
+import { defaultProps } from './defaultProps.js';
+
+function CustomButton(props) {
+  const {
+    children,
+    color = 'primary',
+    disabled = false,
+    onClick = noop,
+    className,
+    style
+  } = { ...defaultProps, ...props };
+
   return (
     <button
-      className={`custom-button ${color}`}
+      className={`custom-button ${color}${className ? ` ${className}` : ''}`}
+      style={style}
       disabled={disabled}
       onClick={onClick}
-      style={style}
     >
       {children}
     </button>

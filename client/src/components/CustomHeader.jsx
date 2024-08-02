@@ -6,18 +6,23 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { defaultProps } from './defaultProps.js';
 
 import IconLogo from './icons/IconLogo.jsx';
 import CustomPopover from './CustomPopover.jsx';
 import CustomSearchBox from './CustomSearchBox.jsx';
 
-function CustomHeader({
-  children,
-  searchBox = false,
-  onSearch,
-  hasMenu = true,
-  searchOptions = []
-}) {
+function CustomHeader(props) {
+  const {
+    children,
+    searchBox = false,
+    onSearch,
+    hasMenu = true,
+    searchOptions = [],
+    className,
+    style
+  } = { ...defaultProps, ...props };
+
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user);
@@ -50,7 +55,7 @@ function CustomHeader({
         <Link to="/user/purchase">
           {user.lastName} {user.firstName}
         </Link>
-        <CustomPopover menu={{ options: popoverOptions}} open={isPopoverVisible} />
+        <CustomPopover menu={{ options: popoverOptions }} open={isPopoverVisible} />
       </div>
 
       <div className="item item-cart">
@@ -73,7 +78,12 @@ function CustomHeader({
   );
 
   return (
-    <header className={`header-container ${searchBox ? 'search_box-enabled' : ''}`}>
+    <header
+      className={`header-container${searchBox ? ' search_box-enabled' : ''}${
+        className ? `${className}` : ''
+      }`}
+      style={style}
+    >
       <div className="logo-container">
         <IconLogo onClick={() => navigate('/home')} />
         {children && <div className="right-content">{children}</div>}

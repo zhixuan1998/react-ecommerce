@@ -1,5 +1,10 @@
 import { noop } from '@/utils/is';
 
+export const defaultProps = {
+    className: '',
+    style: {}
+}
+
 export const defaultMenuProps = {
     visible: false,
     setVisible: noop,

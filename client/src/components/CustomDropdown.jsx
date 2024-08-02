@@ -3,20 +3,23 @@ import './CustomDropdown.scss';
 import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
-
 import { noop } from '@/utils/is';
-import { defaultMenuProps } from './defaultProps';
 import { useClickOutside } from '@/hooks';
+import { defaultProps, defaultMenuProps } from './defaultProps';
 
 import CustomMenu from './CustomMenu.jsx';
 
-function CustomDropdown({
-  displayField = 'value',
-  menuOnHover = false,
-  hideDropdownIcon = false,
-  relativeParentClass = 'custom-dropdown',
-  menu = defaultMenuProps
-}) {
+function CustomDropdown(props) {
+  const {
+    displayField = 'value',
+    menuOnHover = false,
+    hideDropdownIcon = false,
+    relativeParentClass = 'custom-dropdown',
+    menu = defaultMenuProps,
+    className,
+    style
+  } = { ...defaultProps, ...props };
+
   const dropdownRef = useRef(null);
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -59,7 +62,11 @@ function CustomDropdown({
   }
 
   return (
-    <div className="custom-dropdown" ref={dropdownRef}>
+    <div
+      className={`custom-dropdown${className ? ` ${className}` : ''}`}
+      style={style}
+      ref={dropdownRef}
+    >
       <div
         className="dropdown-container"
         onClick={menu.searchable ? openDropdown : toggleDropdown}

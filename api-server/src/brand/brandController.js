@@ -15,7 +15,8 @@ const controller = ({ config, brandRepository, followRepository }) => {
                 if (brandsError) throw brandsError;
 
                 let response = brands ? brands.map((r) => {
-                    const brandId = r.getId();
+                    const brand = new Brand(r);
+                    const brandId = brand.getId();
 
                     const { baseUrl } = config.image;
                     const { logoPath } = config.brand;
@@ -24,14 +25,17 @@ const controller = ({ config, brandRepository, followRepository }) => {
 
                     return {
                         brandId,
-                        name: r.name,
-                        logoUrl
+                        name: brand.name,
+                        logoUrl,
+                        createdAt: brand.getCreatedAt(),
+                        productCount: r.productCount ?? 0,
+                        followerCount: r.followerCount ?? 0
                     };
                 }) : [];
 
                 return res.status(200).send(generateSuccessResponse(response));
             } catch (err) {
-                // console.log(err);
+                console.error(err);
                 return res.status(500).send(generateErrorResponse());
             }
         },
@@ -62,7 +66,7 @@ const controller = ({ config, brandRepository, followRepository }) => {
 
                 return res.status(200).send(generateSuccessResponse(response));
             } catch (err) {
-                // console.log(err);
+                console.error(err);
                 return res.status(500).send(generateErrorResponse());
             }
         }

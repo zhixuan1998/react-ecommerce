@@ -24,4 +24,8 @@ module.exports = class Brand {
     getId() {
         return this._id?.toString() ?? null;
     }
+
+    getCreatedAt() {
+        return this.createdAt.toISOString();
+    }
 };

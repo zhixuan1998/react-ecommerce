@@ -1,6 +1,6 @@
 # E-commerce web application
 
-An e-commerce web application project using React.js / Express.js
+An e-commerce web application project using MERN Stack
 
 ## Recommended IDE Setup
 

@@ -1,0 +1,252 @@
+.main-content .overview-section {
+  width: 100%;
+  background-color: func.theme-color(m);
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+
+  @media (width <= func.breakpoint(m)) {
+    & {
+      flex-direction: column;
+    }
+  }
+
+  .overview-left {
+    display: grid;
+    padding: 10px 20px;
+    background-color: func.theme-color(s);
+    gap: 10px;
+    grid-template:
+      "logo info" func.responsive-scaling(75, 100)
+      "button button" auto / func.responsive-scaling(75, 100) auto;
+
+    .logo {
+      overflow: hidden;
+      border: 3px solid func.theme-color(l);
+      background-color: white;
+      grid-area: logo;
+
+      img {
+        height: 100%;
+        aspect-ratio: 1 / 1;
+      }
+    }
+
+    .info {
+      padding-top: 10px;
+      grid-area: info;
+
+      p {
+        margin: 0;
+      }
+
+      .name {
+        @include mix.multiline-ellipsis(1);
+        font-size: 1rem;
+        font-weight: 900;
+      }
+
+      .status {
+        white-space: nowrap;
+        font-size: 0.7rem;
+        color: rgba(0, 0, 0, 0.45);
+        font-weight: 700;
+      }
+    }
+
+    .custom-button {
+      display: flex;
+      column-gap: 10px;
+      justify-content: center;
+      align-items: center;
+      grid-area: button;
+    }
+  }
+
+  .overview-right {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    row-gap: 10px;
+
+    @media (width <= func.breakpoint(l)) {
+      & {
+        flex-direction: column;
+      }
+    }
+
+    .summary {
+      display: flex;
+      flex-grow: 1;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 700;
+      min-width: 50%;
+
+      .summary-icon {
+        font-size: 1rem;
+        padding-right: 7px;
+      }
+
+      .summary-text {
+        margin-left: 5px;
+      }
+    }
+  }
+}
+
+.pagination-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+
+  margin: 5px 0;
+  gap: 10px;
+
+  .custom-dropdown {
+    height: 35px;
+
+    .dropdown-container {
+      border: 1px solid func.theme-color(l);
+      background-color: #fff;
+    }
+  }
+
+  .loading-indicator {
+    display: flex;
+    justify-content: center;
+    .spinner-border {
+      color: func.theme-color(xl, 0.5);
+    }
+  }
+}
+
+.shopping-section {
+  display: flex;
+
+  .image-wrapper {
+    --border: 1px solid #000000;
+
+    max-width: 300px;
+    width: 100%;
+    position: relative;
+
+    .main-image {
+      overflow: clip;
+
+      &,
+      .swiper img {
+        width: 100%;
+        transform-origin: top left;
+
+        &.transition {
+          transition: transform 0.2s ease-out;
+        }
+      }
+
+      .lens {
+        top: 0;
+        left: 0;
+        overflow: clip;
+        position: absolute;
+        z-index: 2;
+
+        img {
+          position: absolute;
+        }
+
+        .box-shadow-border {
+          position: absolute;
+        }
+      }
+
+      &:not(:hover) .lens {
+        visibility: hidden;
+      }
+    }
+
+    .sub-swiper-wrapper {
+      position: relative;
+
+      .swiper {
+        .swiper-button-prev,
+        .swiper-button-next {
+          --swiper-navigation-sides-offset: 0;
+
+          color: #000000;
+
+          &:hover {
+            background-color: func.theme-color(xl, 0.35);
+          }
+
+          &:after {
+            --swiper-navigation-size: 25px;
+          }
+        }
+
+        .swiper-slide .image {
+          background-size: 100%;
+          aspect-ratio: 3 / 4;
+        }
+      }
+
+      .icon {
+        display: flex;
+        top: 0;
+        height: 100%;
+        padding: 5px;
+        position: absolute;
+        color: #000000;
+        font-size: 30px;
+        z-index: 2;
+
+        &.angle-left > *,
+        &.angle-right > * {
+          margin: auto 0;
+        }
+
+        &.angle-left {
+          left: 0;
+        }
+
+        &.angle-right {
+          right: 0;
+        }
+
+        &.disabled {
+          pointer-events: none;
+        }
+      }
+    }
+  }
+
+  .detail {
+    flex-grow: 1;
+
+    .statistic {
+      .statistic-item {
+        &:not(:last-child) {
+          border-right: 2px solid func.theme-color(m);
+        }
+      }
+    }
+
+    .decision {
+      h3 {
+        width: 100px;
+      }
+    }
+  }
+}
+
+.box-shadow-border {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow:
+    inset 2px 2px func.theme-color(xl),
+    inset -2px -2px func.theme-color(xl);
+}

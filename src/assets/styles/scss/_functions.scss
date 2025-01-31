@@ -1,0 +1,31 @@
+@use "sass:math";
+@use "sass:list";
+@use "sass:map";
+@use "variables" as var;
+
+@function responsive-scaling($min: 5, $max: 360, $min-width: 576, $max-width: 1920) {
+    @return calc(
+        (max(100vw, ($min-width * 1px)) - ($min-width * 1px)) * (($max - $min) / ($max-width - $min-width)) +
+            ($min * 1px)
+    );
+}
+
+@function theme-color($depth, $opacity: 1) {
+    $value: map-get(var.$theme-colors, $depth);
+
+    @if $value == null {
+        @error "Unknown theme color `#{$depth}`.";
+    }
+
+    @return rgba(list.nth($value, 1), list.nth($value, 2), list.nth($value, 3), $opacity);
+}
+
+@function breakpoint($size: m) {
+    $value: map-get(var.$breakpoints, $size);
+
+    @if $value == null {
+        @error "Unknown breakpoint `#{$size}`.";
+    }
+
+    @return $value;
+}

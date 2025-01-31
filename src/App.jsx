@@ -1,4 +1,4 @@
-// import './App.scss';
+import './App.scss';
 
 import { useState, useRef, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -79,8 +79,8 @@ function App() {
 
             return (
               <dialog
-                className={`dialog ${isEntering ? 'bounce-enter-active' : ''} ${
-                  isExiting ? 'bounce-leave-active' : ''
+                className={`dialog${isEntering ? ' bounce-enter-active' : ''}${
+                  isExiting ? ' bounce-leave-active' : ''
                 }`}
                 ref={dialogRef}
               >

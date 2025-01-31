@@ -12,7 +12,6 @@ const HomeView = () => import('@/features/Home/HomeView');
 const BrandView = () => import('@/features/Product/BrandView');
 const CategoryView = () => import('@/features/Product/CategoryView');
 const ProductDetailView = () => import('@/features/Product/DetailView');
-const ProductView = () => import('@/features/Focusable/ProductView');
 
 const routes = [
   {
@@ -46,10 +45,6 @@ const routes = [
   {
     path: 'products/:productId/detail',
     lazy: ProductDetailView
-  },
-  {
-    path: 'focusable',
-    lazy: ProductView
   },
 ];
 

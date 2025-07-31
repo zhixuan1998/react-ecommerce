@@ -35,7 +35,7 @@ function App() {
 
   function openModal(obj) {
     const {
-      title = messages.error.title.oops(),
+      title = messages.error.title.failedToLoad(),
       message = messages.error.message.general(),
       buttonText = messages.button.ok(),
       onClose = noop
@@ -86,9 +86,9 @@ function App() {
               >
                 <div className="title">{modal.title}</div>
                 <div className="body">{modal.message}</div>
-                <div className="button" onClick={() => exitTransition()}>
+                <button className="button" onClick={() => exitTransition()}>
                   {modal.buttonText}
-                </div>
+                </button>
               </dialog>
             );
           }}

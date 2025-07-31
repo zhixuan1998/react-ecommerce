@@ -16,7 +16,7 @@ const initModalValue = {
   onClose: noop
 };
 
-const transitionDurationInMs = 400;
+const transitionDurationInMs = 300;
 
 function App() {
   const auth = useAuth();

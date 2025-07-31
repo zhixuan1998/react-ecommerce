@@ -35,7 +35,7 @@ function App() {
 
   function openModal(obj) {
     const {
-      title = messages.error.title.fetch(),
+      title = messages.error.title.opps(),
       message = messages.error.message.general(),
       buttonText = messages.button.ok(),
       onClose = noop
